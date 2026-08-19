@@ -1,0 +1,4 @@
+Poly Bridge Ported to The Web
+-----------------------------
+Copyright Notice
+Poly Bridge and all associated game assets, including but not limited to graphics, audio, levels, characters, names, and other original content, are the property of Dry Cactus and their respective rights holders. This project does not claim ownership of any of the original Poly Bridge content. All rights to the original game and its assets belong to their respective owners.
