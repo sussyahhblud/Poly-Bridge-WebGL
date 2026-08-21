@@ -1,5 +1,8 @@
 Poly Bridge Ported to The Web
------------------------------
+
+If you find bugs then make an issue boi. 
+## port by riddy boiiiiiiiiiii
+
 ## Copyright Notice
 
 **Poly Bridge** and all associated game assets, including but not limited to graphics, audio, levels, characters, names, and other original content, are the property of **Dry Cactus** and their respective rights holders.
