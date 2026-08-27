@@ -1,0 +1,9 @@
+# Build output is binary. Without this Git applies line-ending conversion to
+# .unityweb and .wasm and silently destroys them on commit - every one of these
+# files was once pushed as a bare CRLF, two bytes long.
+* -text
+*.unityweb binary
+*.wasm binary
+*.data binary
+*.png binary
+*.ico binary
