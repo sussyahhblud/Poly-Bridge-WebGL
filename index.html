@@ -8,24 +8,14 @@
       var JSDELIVR_USER = "sussyahhblud";
       var JSDELIVR_REPO  = "Poly-Bridge-WebGL";
 
-      // This page serves the WebGL 1.0 ONLY build, which lives in /WebGL1.
-      // The WebGL 2 build sits at the repo root and is served by PolyBridge.html.
       var JSDELIVR_PATH = "WebGL1";
 
-      // Used only if the live commit lookup below fails (rate limit, offline, etc).
-      // jsDelivr caches branch refs for ~12h, so this is just a safety net.
       var JSDELIVR_FALLBACK_REF = "main";
 
       var JSDELIVR_REF = JSDELIVR_FALLBACK_REF;
       var JSDELIVR_BASE = null;
       var JSDELIVR_ROOT = null;
 
-      // Resolves the LATEST commit SHA on the branch via the GitHub API,
-      // then builds jsDelivr URLs pinned to that exact commit. jsDelivr
-      // caches per-commit URLs forever (a commit is immutable), but this
-      // lookup itself is always fresh -- so the moment you push new files,
-      // the next page load automatically picks them up with no manual
-      // cache purge and no waiting out jsDelivr's branch cache window.
       window.jsdelivrReady = (async function resolveLatestRef() {
         try {
           var resp = await fetch(
@@ -39,8 +29,6 @@
             JSDELIVR_REF = data.sha;
           }
         } catch (err) {
-          // Fall back to the branch ref -- still works, just subject to
-          // jsDelivr's normal ~12h branch cache window.
           console.warn("Falling back to branch ref '" + JSDELIVR_FALLBACK_REF +
                         "' (couldn't resolve latest commit):", err);
           JSDELIVR_REF = JSDELIVR_FALLBACK_REF;
@@ -51,10 +39,6 @@
           "https://cdn.jsdelivr.net/gh/" + JSDELIVR_USER + "/" + JSDELIVR_REPO +
           "@" + JSDELIVR_REF + (subPath ? "/" + subPath : "");
 
-        // TemplateData and header.png were pushed to the REPO ROOT alongside
-        // the WebGL 2 build, not duplicated into /WebGL1 - so they are fetched
-        // from the root base, not from JSDELIVR_BASE. Using JSDELIVR_BASE here
-        // would 404 and silently drop the stylesheet.
         JSDELIVR_ROOT =
           "https://cdn.jsdelivr.net/gh/" + JSDELIVR_USER + "/" + JSDELIVR_REPO +
           "@" + JSDELIVR_REF;
@@ -371,11 +355,6 @@
         progressBarFull.style.width = (100 * total) + "%";
       }
 
-      // Unity names its output after the build folder, so the WebGL 1 build
-      // produces WebGL1.* rather than WebGL.*. Changing only JSDELIVR_PATH and
-      // leaving these as WebGL.* would 404 every file - and because
-      // manifest.json is keyed by filename, the manifest lookup would miss too
-      // and it would try to fetch the whole 56 MB data file in one piece.
       var DATA_FILENAME = "WebGL1.data.unityweb";
       var CODE_FILENAME = "WebGL1.wasm.unityweb";
       var FRAMEWORK_FILENAME = "WebGL1.framework.js.unityweb";
@@ -410,7 +389,6 @@
 
       async function boot() {
         try {
-          // Wait for the latest-commit lookup to finish resolving JSDELIVR_BASE
           var buildUrl = await window.jsdelivrReady;
 
           var loaderUrl = buildUrl + "/" + LOADER_FILENAME;
@@ -427,7 +405,6 @@
 
           canvas.style.background = "url('" + JSDELIVR_ROOT + "/header.png') center / cover";
 
-          // silent load of manifest
           var manifestResp = await fetch(buildUrl + "/manifest.json");
           if (!manifestResp.ok) {
             throw new Error("Couldn't load manifest.json (status " + manifestResp.status + ")");
@@ -453,7 +430,6 @@
           config.codeUrl = codeUrl;
           config.frameworkUrl = frameworkUrl;
 
-          // silent load of loader
           var script = document.createElement("script");
           script.src = loaderUrl;
           script.onload = () => {
