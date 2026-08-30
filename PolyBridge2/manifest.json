@@ -2,5 +2,9 @@
   "WebGL.data": {
     "partCount": 14,
     "totalSize": 278414603
+  },
+  "WebGL.wasm": {
+    "partCount": 3,
+    "totalSize": 47563295
   }
 }
