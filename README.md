@@ -1,4 +1,4 @@
-Poly Bridge Ported to The Web
+Poly Bridge 1 and 2 Ported to The Web
 
 If you find bugs then make an issue boi. 
 ## port by riddy boiiiiiiiiiii
